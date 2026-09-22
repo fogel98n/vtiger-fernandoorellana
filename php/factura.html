@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factura</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<section class="contenedor-factura">
+   <header class="header-factura">
+     <h1>Facturas</h1>
+    <a href="">Crear factura</a>
+   </header>
+   
+    <div id="facturas">
+
+    </div>
+    <script>
+        fetch('main.php')
+        .then(res=>res.json())
+       .then(facturas=>{
+        console.log("datos recibidos:",facturas)
+        const contenedor=document.getElementById('facturas')
+
+        facturas.forEach(factura => {
+            let productos=''
+            factura.detalles.forEach(detalle=>{
+                productos+=`
+                 <div class="producto">
+                        <p>Producto: ${detalle.producto}</p>
+                        <p>Cantidad: ${detalle.cantidad}</p>
+                        <p>Precio: Q${detalle.precio_unitario}</p>
+                    </div>
+                `
+            })
+            contenedor.innerHTML+=
+            `<div class="factura"> 
+                <h2> Factura De:${factura.nombre}</h2>
+                <p> fecha:${factura.fecha}</p>
+                <p> estado:${factura.estado}</p>
+                ${productos}
+                <a href="editar-factura.html?id=${factura.id}"class="boton">editar</a>
+                </div>
+                ` 
+                
+            });
+       })
+       .catch(err=>console.error('errro cargando facturas',err))
+    </script>
+    
+</section>
+</body>
+</html>

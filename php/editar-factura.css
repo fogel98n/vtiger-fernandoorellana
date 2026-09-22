@@ -1,0 +1,136 @@
+.contenedor-editar {
+    width: 100%;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.contenedor-editar h1 {
+    margin-bottom: 25px;
+    font-size: 30px;
+    color: #1f2937;
+}
+
+#factura {
+    background: white;
+    padding: 30px;
+    border-radius: 14px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 5px 18px rgba(0,0,0,.08);
+}
+
+.informacion-factura {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.campo:first-child {
+    grid-column: 1 / -1;
+}
+
+.campo label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #374151;
+}
+
+.campo input,
+.campo select {
+    width: 100%;
+    padding: 11px 13px;
+    border: 1px solid #d1d5db;
+    border-radius: 7px;
+    font-size: 15px;
+}
+
+#factura h2 {
+    margin: 30px 0 15px;
+    font-size: 20px;
+    color: #1f2937;
+}
+
+#productos {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.producto {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 15px;
+    padding: 15px;
+    border: 1px solid #e5e7eb;
+    border-radius: 9px;
+    background: #f9fafb;
+}
+
+.acciones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.boton {
+    padding: 11px 20px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.cancelar {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+.guardar {
+    border: none;
+    background: #2563eb;
+    color: white;
+}
+
+@media (max-width: 600px) {
+
+    .contenedor-editar {
+        margin: 20px auto;
+        padding: 0 15px;
+    }
+
+    .contenedor-editar h1 {
+        font-size: 26px;
+    }
+
+    #factura {
+        padding: 18px;
+    }
+
+    .informacion-factura,
+    .producto {
+        grid-template-columns: 1fr;
+    }
+
+    .campo:first-child {
+        grid-column: auto;
+    }
+
+    .acciones {
+        flex-direction: column;
+    }
+
+    .boton {
+        width: 100%;
+        text-align: center;
+    }
+}

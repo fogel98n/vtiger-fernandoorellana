@@ -1,0 +1,23 @@
+# Configuración y credenciales de vTiger
+config.inc.php
+
+# Archivos de configuración locales
+*.local.php
+.env
+.env.*
+
+# Logs
+*.log
+logs/
+
+# Archivos temporales
+cache/
+test/
+storage/
+
+# Archivos generados
+*.tmp
+
+# Sistema operativo
+.DS_Store
+Thumbs.db

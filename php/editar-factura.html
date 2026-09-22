@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Editar factura</title>
+<link rel="stylesheet" href="editar-factura.css">
+</head>
+<body>
+
+<div class="contenedor-editar">
+<h1>Editar factura</h1>
+<div id="mensaje"></div>
+
+<div class="factura">
+<div class="informacion-factura">
+
+<div class="campo">
+<label>Cliente</label>
+<input type="text" id="cliente" readonly>
+</div>
+
+<div class="campo">
+<label>Fecha</label>
+<input type="date" id="fecha">
+</div>
+
+<div class="campo">
+<label>Estado</label>
+<select id="estado">
+<option value="pendiente">Pendiente</option>
+<option value="pagada">Pagada</option>
+<option value="cancelada">Cancelada</option>
+</select>
+</div>
+
+</div>
+
+<h2>Productos</h2>
+<div id="productos"></div>
+
+<div class="acciones">
+<a href="factura.html" class="boton cancelar">Cancelar</a>
+<button type="button" class="boton guardar" id="guardar">Guardar cambios</button>
+</div>
+
+</div>
+</div>
+
+<script>
+const idFactura=new URLSearchParams(location.search).get('id');
+const cliente=document.getElementById('cliente');
+const fecha=document.getElementById('fecha');
+const estado=document.getElementById('estado');
+const productos=document.getElementById('productos');
+const mensaje=document.getElementById('mensaje');
+
+if(idFactura){
+fetch(`main.php?id=${idFactura}`)
+.then(res=>{
+if(!res.ok)throw new Error('Error en el servidor');
+return res.json();
+})
+.then(facturas=>{
+const factura=facturas.find(f=>String(f.id)===String(idFactura));
+if(!factura)throw new Error('No se encontró la factura');
+
+cliente.value=factura.nombre;
+fecha.value=factura.fecha.replace('T',' ').split(' ')[0];
+estado.value=factura.estado;
+
+if(factura.detalles?.length){
+factura.detalles.forEach(detalle=>{
+productos.innerHTML+=`
+<div class="producto" data-id="${detalle.id}">
+<div class="campo">
+<label>Producto</label>
+<input type="text" value="${detalle.producto}" readonly>
+</div>
+
+<div class="campo">
+<label>Cantidad</label>
+<input type="number" value="${detalle.cantidad}" min="1" class="cantidad">
+</div>
+
+<div class="campo">
+<label>Precio unitario</label>
+<input type="number" value="${detalle.precio_unitario}" min="0" step="0.01" class="precio">
+</div>
+</div>`;
+});
+}
+})
+.catch(error=>{
+console.error(error);
+mensaje.textContent=error.message;
+mensaje.className='error';
+});
+}
+
+document.getElementById('guardar').addEventListener('click',()=>{
+const fechaActual=fecha.value;
+const estadoActual=estado.value;
+
+const detalles=[...document.querySelectorAll('.producto')].map(div=>({
+id:div.dataset.id,
+cantidad:div.querySelector('.cantidad').value,
+precio_unitario:div.querySelector('.precio').value
+}));
+
+fetch('editar-factura.php',{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({
+id:idFactura,
+fecha:fechaActual,
+estado:estadoActual,
+detalles:detalles
+})
+})
+.then(res=>{
+if(!res.ok)throw new Error('Error actualizando factura');
+return res.text();
+})
+.then(respuesta=>{
+console.log(respuesta);
+alert('Factura actualizada');
+window.location.href='factura.html';
+})
+.catch(error=>{
+console.error(error);
+mensaje.textContent=error.message;
+mensaje.className='error';
+});
+});
+</script>
+
+</body>
+</html>
