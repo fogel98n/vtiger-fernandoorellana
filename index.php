@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-
+echo "prueba";
 if (!file_exists("vendor/autoload.php")) {
     echo "Please install composer dependencies.";
     exit;
